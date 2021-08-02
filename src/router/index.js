@@ -1,27 +1,71 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+import { createRouter, createWebHistory } from 'vue-router'
+import store from '../store/index.js'
+import MainPage from '@/pages/MainPage'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: MainPage,
+    meta: {
+      layout: 'main',
+      auth: true
+    }
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: function () {
-      return import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/help',
+    name: 'Help',
+    component: () => import('@/pages/HelpPage.vue'),
+    meta: {
+      layout: 'main',
+      auth: true
+    }
+  },
+  {
+    path: '/messages',
+    name: 'Messages',
+    component:() => import('@/pages/MessagesPage.vue'),
+    meta: {
+      layout: 'main',
+      auth: true
+    }
+  },
+  {
+    path: '/signUp',
+    name: 'SignUp',
+    component:() => import('@/pages/SignUpPage.vue'),
+    meta: {
+      layout: 'auth',
+      auth: false
+    }
+  },
+  {
+    path: '/auth',
+    name: 'Auth',
+    component:() => import('@/pages/AuthPage.vue'),
+    meta: {
+      layout: 'auth',
+      auth: false
     }
   }
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
-  routes
+  history: createWebHistory(process.env.BASE_URL),
+  routes,
+  linkActiveClass: 'active',
+  linkExactActiveClass: 'active',
 })
+router.beforeEach((to,from,next)=> {
+  const requireAuth = to.meta.auth
+  console.log(to.meta.auth);
 
+  if(requireAuth && store.getters['auth/isAuthentificated']){
+    next()
+  } else if (requireAuth && !store.getters['auth/isAuthentificated']) {
+    next('/auth?message=auth')
+  } else {
+    next()
+  }
+})
 export default router
