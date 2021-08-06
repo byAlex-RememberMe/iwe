@@ -47,7 +47,7 @@ export default {
 
     return {
       logout: () => {
-        store.commit("auth/logout");
+        store.commit("logout");
         router.push("/auth");
       },
       open: () => store.commit("openSidebar"),

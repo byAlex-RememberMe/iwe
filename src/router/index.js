@@ -56,13 +56,13 @@ const router = createRouter({
   linkActiveClass: 'active',
   linkExactActiveClass: 'active',
 })
+
 router.beforeEach((to,from,next)=> {
   const requireAuth = to.meta.auth
-  console.log(to.meta.auth);
 
-  if(requireAuth && store.getters['auth/isAuthentificated']){
+  if(requireAuth && store.getters.isAuthentificated ){
     next()
-  } else if (requireAuth && !store.getters['auth/isAuthentificated']) {
+  } else if (requireAuth && !store.getters.isAuthentificated) {
     next('/auth?message=auth')
   } else {
     next()

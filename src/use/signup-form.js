@@ -1,13 +1,12 @@
 import { computed, watch } from "vue";
 import * as yup from "yup";
 import { useField, useForm } from "vee-validate";
-import {useStore} from 'vuex'
-import {useRouter} from 'vue-router'
-
+import { useStore } from "vuex";
+import { useRouter } from 'vue-router'
 
 export function useSignupForm() {
-	const store = useStore()
 	const router = useRouter()
+	const store = useStore();
 	const { handleSubmit, isSubmitting, submitCount } = useForm();
 	const { value: email, errorMessage: eError, handleBlur: eBlur } = useField("email",
 		yup
@@ -29,23 +28,14 @@ export function useSignupForm() {
 
 	watch(isTooManyAttempts, (val) => {
 		if (val) {
-			setTimeout(() => (submitCount.value = 0), 3000);
+			setTimeout(() => submitCount.value = 0, 3000);
 		}
 	});
 
-	// const onSignup = handleSubmit(async values => {
-	// 	try {
-	// 		await store.dispatch('signup/onSignup', values)
-	// 		router.push('/') /* не пускает на главную страницу */
-	// 	} catch(e){
-	// 	}
-	// });
-	
-	const onSubmit = handleSubmit(async values => {
-		console.log(values);
+	const onSubmit =  handleSubmit(async values => {
 		try {
 			await store.dispatch('signup/onSignup', values)
-			router.push('/') /* не пускает на главную страницу */
+			router.push("/")
 		} catch(e){
 		}
 	});
