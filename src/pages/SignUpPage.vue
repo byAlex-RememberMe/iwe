@@ -10,7 +10,7 @@
             Зарегистрируйтесь, чтобы смотреть фото и видео ваших друзей.
           </h5>
 
-          <form class="form-control" @submit.prevent="onSubmit">
+          <form class="form-control" @submit.prevent="onSubmitInputsValuesSignup">
             <div class="m-3 form__control__inputs" :class="{ invalid: eError }">
               <label for="email"></label>
               <input
@@ -68,7 +68,7 @@
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { error } from "@/utils/error.js";
-import { useSignupForm } from "@/use/signup-form.js";
+import { useLoginAndSignupForm } from "@/use/login-and-signup-form.js";
 export default {
   setup() {
     const route = useRoute();
@@ -79,7 +79,7 @@ export default {
         type: "warning",
       });
     }
-    return { ...useSignupForm()};
+    return { ...useLoginAndSignupForm()};
   },
 };
 </script>
@@ -93,9 +93,9 @@ export default {
   align-items:center;
   height: 100vh;
 
-  background-image: url("../images/iphone2.png");
+  background-image: url("../images/iphone4.png");
+  background-size: 1330px;
   background-repeat: no-repeat;
-  background-size: 432px;
   background-position: center;
 }
 .auth__form{  
@@ -122,6 +122,7 @@ export default {
 .auth__form__logo {
   font-size: 140px;
   font-family: "Cookie", cursive;
+  text-shadow: 1px 1px 10px teal;
 }
 .auth__form__text{
   margin: 0 40px 16px;
